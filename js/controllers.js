@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('JobsListCtrl', ['$scope', 'JobRepo', function ($scope, JobRepo) {
+.controller('JobsListCtrl', ['$scope', '$ionicLoading', 'JobRepo', function ($scope, $ionicLoading, JobRepo) {
 	$scope.loaded = false;
 	$scope.page = 0;
 	$scope.jobs = [];
@@ -32,6 +32,9 @@ angular.module('starter.controllers', [])
 
 	$scope.loadJobs = function (page) {
 		$scope.loaded = false;
+		$ionicLoading.show({
+			template: 'Loading...'
+		});
 
 		// Restrict paging to bounds of the set
 		if (page < 1) {
@@ -44,6 +47,7 @@ angular.module('starter.controllers', [])
 			$scope.jobs = data;
 			$scope.page = page;
 			$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
+			$ionicLoading.hide();
 			$scope.loaded = true;
 		});
 	}
