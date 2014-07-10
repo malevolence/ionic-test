@@ -124,6 +124,8 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
-}]);
+}])
+
+.value('baseUrl', 'http://192.168.0.20:8084');
 
 
