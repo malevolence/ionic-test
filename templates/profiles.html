@@ -3,6 +3,13 @@
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
-	<p class="padding">This is the Profiles placeholder page.</p>
+	<ion-list>
+		<ion-item class="item-avatar" ng-repeat="profile in profiles" href="#/app/profile/{{profile.id}}">
+			<img src="img/default.png" alt="Company Logo" />
+			<h2>{{profile.name}}</h2>
+			<div><small>{{profile.location}}</small></div>
+			<p>{{profile.description}}</p>
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>

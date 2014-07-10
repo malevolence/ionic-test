@@ -20,25 +20,18 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
   });
 })
 
-.config(function($locationProvider, $stateProvider, $urlRouterProvider) {
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
 //  $locationProvider.html5Mode(true);
 
-  $stateProvider
+  $httpProvider.defaults.useXDomain = true;
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
+  $stateProvider
     .state('app', {
       url: "/app",
       abstract: true,
       templateUrl: "templates/menu.html",
       controller: 'AppCtrl'
-    })
-
-    .state('app.profiles', {
-      url: "/profiles",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/profiles.html"
-        }
-      }
     })
 
     .state('app.leads', {
@@ -87,9 +80,50 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 				controller: 'JobItemCtrl'
 			}
 		}
+	})
+	
+	.state('app.sections', {
+		url: '/sections',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/sections.html',
+				controller: 'SectionsCtrl'
+			}
+		}
+	})
+	
+	.state('app.categories', {
+		url: '/sections/:sectionId',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/categories.html',
+				controller: 'CategoriesCtrl'
+			}
+		}
+	})
+	
+	.state('app.profiles', {
+		url: '/profiles/:categoryId',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/profiles.html',
+				controller: 'ProfileListCtrl'
+			}
+		}
+	})
+	
+	.state('app.singleprofile', {
+		url: '/profile/:id',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/singleprofile.html',
+				controller: 'ProfileItemCtrl'
+			}
+		}
 	});
+
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/playlists');
-});
+}]);
 
 
