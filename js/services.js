@@ -15,4 +15,5 @@ angular.module('starter.services', [])
 }])
 .factory('BlogRepo', ['$resource', 'baseUrl', function($resource, baseUrl) {
 	return $resource(baseUrl + '/blog/:id', { id: '@id' });
+=======
 }]);
