@@ -12,4 +12,7 @@ angular.module('starter.services', [])
 }])
 .factory('ProfileRepo', ['$resource', 'baseUrl', function($resource, baseUrl) {
 	return $resource(baseUrl + '/profiles/:id', { id: '@id' });
+}])
+.factory('BlogRepo', ['$resource', 'baseUrl', function($resource, baseUrl) {
+	return $resource(baseUrl + '/blog/:id', { id: '@id' });
 }]);
