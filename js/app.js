@@ -93,8 +93,9 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 		}
 	})
 	
-	.state('app.sections', {
-		url: '/sections',
+	.state('app.companies', {
+		url: '/companies',
+		data: { isCompany: true },
 		views: {
 			'menuContent': {
 				templateUrl: 'templates/sections.html',
@@ -103,6 +104,17 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 		}
 	})
 	
+	.state('app.freelancers', {
+		url: '/freelancers',
+		data: { isCompany: false },
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/sections.html',
+				controller: 'SectionsCtrl'
+			}
+		}
+	})
+
 	.state('app.categories', {
 		url: '/sections/:sectionId',
 		views: {
@@ -114,10 +126,10 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 	})
 	
 	.state('app.profilelanding', {
-		url: '/profiles/landing',
+		url: '/profiles',
 		views: {
 			'menuContent': {
-				templateUrl: 'templates/profile-landing.html',
+				templateUrl: 'templates/profilelanding.html',
 				controller: 'ProfileLandingCtrl'
 			}
 		}
@@ -147,6 +159,6 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
   $urlRouterProvider.otherwise('/app/landing');
 }])
 
-.value('baseUrl', 'http://localhost:8080');
+.value('baseUrl', 'http://prohub-api.azurewebsites.net');
 
 

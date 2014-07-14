@@ -23,7 +23,8 @@ angular.module('starter.controllers', [])
 	$scope.loadPosts(1);
 })
 
-.controller('SectionsCtrl', function($scope, $ionicLoading, LookupRepo) {
+.controller('SectionsCtrl', function($scope, $ionicLoading, $state, LookupRepo) {
+	$scope.isCompany = $state.current.data.isCompany;
 	$scope.loaded = false;
 	$scope.sections = [];
 	$scope.loadSections = function() {
@@ -32,11 +33,19 @@ angular.module('starter.controllers', [])
 			template: 'Loading...'
 		});
 
-		LookupRepo.sections({}, function (data) {
-			$scope.sections = data;
-			$ionicLoading.hide();
-			$scope.loaded = true;
-		});
+		if ($state.current.data.isCompany) {
+			LookupRepo.companies({}, function (data) {
+				$scope.sections = data;
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		} else {
+			LookupRepo.freelance({}, function (data) {
+				$scope.sections = data;
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		}
 	};
 	
 	$scope.loadSections();
@@ -67,6 +76,8 @@ angular.module('starter.controllers', [])
 .controller('ProfileListCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
 	$scope.loaded = false;
 	$scope.profiles = [];
+	$scope.useLocation = true;
+	$scope.position = null;
 	$scope.page = 0;
 	$scope.pagination = {
 		totalCount: 0,
@@ -88,13 +99,54 @@ angular.module('starter.controllers', [])
 			page = $scope.pagination.totalPages;
 		}
 
-		ProfileRepo.query({ category: $stateParams.categoryId, page: page }, function(data, responseHeaders) {
-			$scope.profiles = data;
-			$scope.page = page;
-			$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
-			$ionicLoading.hide();
-			$scope.loaded = true;
-		});
+		if ($scope.useLocation) {
+			$scope.getLocation();
+		}
+		
+		
+		if ($scope.position != null) {
+			ProfileRepo.profilegps({ catId: $stateParams.categoryId, lat: $scope.latitude, lng: $scope.longitude, page: page }, function(data, responseHeaders) {
+				$scope.profiles = data;
+				$scope.page = page;
+				$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		} else {
+			ProfileRepo.query({ category: $stateParams.categoryId, page: page }, function(data, responseHeaders) {
+				$scope.profiles = data;
+				$scope.page = page;
+				$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		}
+	};
+	
+	$scope.getLocation = function() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				$scope.position = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+			}, function(error) {
+				switch (error.code) {
+					case error.PERMISSION_DENIED:
+						alert('User denied the request for location');
+						break;
+					case error.POSITION_UNAVAILABLE:
+						alert('Location unavailable');
+						break;
+					case error.TIMEOUT:
+						alert('Location request timed out');
+						break;
+					case error.UNKNOWN_ERROR:
+						alert('Unknown error occurred');
+						break;
+				}
+			});
+		} else {
+			// not supported
+			alert('Geolocation is not supported.');
+		}
 	};
 	
 	$scope.loadProfiles(1);
@@ -103,22 +155,6 @@ angular.module('starter.controllers', [])
 .controller('ProfileItemCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
 	$scope.profile = ProfileRepo.get({ id: $stateParams.id });
 })
-
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-	$scope.id = $stateParams.playlistId;
-})
-
 
 .controller('JobsListCtrl', ['$scope', '$ionicLoading', 'JobRepo', function ($scope, $ionicLoading, JobRepo) {
 	$scope.loaded = false;
