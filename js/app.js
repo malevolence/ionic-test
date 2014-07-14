@@ -147,6 +147,6 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
   $urlRouterProvider.otherwise('/app/landing');
 }])
 
-.value('baseUrl', 'http://192.168.0.20:8084');
+.value('baseUrl', 'http://localhost:8080');
 
 
