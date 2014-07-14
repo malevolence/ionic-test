@@ -42,6 +42,17 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
         }
       }
     })
+	
+	.state('app.landing', {
+		url: '/landing',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/landing.html',
+				controller: 'LandingCtrl'
+			}
+		}
+	})
+	
     .state('app.playlists', {
       url: "/playlists",
       views: {
@@ -102,6 +113,16 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 		}
 	})
 	
+	.state('app.profilelanding', {
+		url: '/profiles/landing',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/profile-landing.html',
+				controller: 'ProfileLandingCtrl'
+			}
+		}
+	})
+	
 	.state('app.profiles', {
 		url: '/profiles/:categoryId',
 		views: {
@@ -123,7 +144,7 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 	});
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/landing');
 }])
 
 .value('baseUrl', 'http://192.168.0.20:8084');

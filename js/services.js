@@ -10,6 +10,9 @@ angular.module('starter.services', [])
 		categories: { method: 'GET', isArray: true, url: baseUrl + '/lookups/sections/:sectionId/categories', params: { sectionId: '@sectionId' }}
 	});
 }])
-.factory('ProfileRepo', ['$resource', function($resource) {
-	return $resource('http://192.168.0.20:8084/profiles/:id', { id: '@id' });
+.factory('ProfileRepo', ['$resource', 'baseUrl', function($resource, baseUrl) {
+	return $resource(baseUrl + '/profiles/:id', { id: '@id' });
+}])
+.factory('BlogRepo', ['$resource', 'baseUrl', function($resource, baseUrl) {
+	return $resource(baseUrl + '/blog/:id', { id: '@id' });
 }]);

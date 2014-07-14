@@ -3,6 +3,26 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope) {
 })
 
+.controller('LandingCtrl', function($scope, $ionicLoading, BlogRepo) {
+	$scope.loaded = false;
+	$scope.posts = [];
+
+	$scope.loadPosts = function(page) {
+		$scope.loaded = false;
+		$ionicLoading.show({
+			template: 'Loading...'
+		});
+		
+		BlogRepo.query({ page: 1 }, function(data) {
+			$scope.posts = data;
+			$ionicLoading.hide();
+			$scope.loaded = true;
+		});
+	};
+	
+	$scope.loadPosts(1);
+})
+
 .controller('SectionsCtrl', function($scope, $ionicLoading, LookupRepo) {
 	$scope.loaded = false;
 	$scope.sections = [];
@@ -39,6 +59,9 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadCategories();
+})
+
+.controller('ProfileLandingCtrl', function($scope) {
 })
 
 .controller('ProfileListCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
