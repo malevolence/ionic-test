@@ -1,0 +1,14 @@
+<div>{{message}}</div>
+<form class="form-login" role="form" ng-submit="login()">
+	<div class="list list-inset">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Email</span>
+			<input type="email" placeholder="email address" required autofocus ng-model="loginData.userName" />
+		</label>
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Password</span>
+			<input type="password" placeholder="password" required ng-model="loginData.password" />
+		</label>
+		<button class="button button-block button-positive" type="submit">Submit</button>
+	</div>
+</form>

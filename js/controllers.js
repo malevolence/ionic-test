@@ -3,6 +3,24 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function($scope) {
 })
 
+.controller('LoginCtrl', ['$scope', '$location', 'authService', '$ionicLoading', function($scope, $location, authService, $ionicLoading) {
+	$ionicLoading.hide();
+	$scope.loginData = {
+		userName: '',
+		password: ''
+	};
+	
+	$scope.message = '';
+	
+	$scope.login = function() {
+		authService.login($scope.loginData).then(function(response) {
+			$location.path('/landing');
+		}, function(err) {
+			$scope.message = err.error_description;
+		});
+	};
+}])
+
 .controller('LandingCtrl', function($scope, $ionicLoading, BlogRepo) {
 	$scope.loaded = false;
 	$scope.posts = [];
@@ -33,19 +51,24 @@ angular.module('starter.controllers', [])
 			template: 'Loading...'
 		});
 
-		if ($state.current.data.isCompany) {
-			LookupRepo.companies({}, function (data) {
-				$scope.sections = data;
-				$ionicLoading.hide();
-				$scope.loaded = true;
-			});
-		} else {
-			LookupRepo.freelance({}, function (data) {
-				$scope.sections = data;
-				$ionicLoading.hide();
-				$scope.loaded = true;
-			});
-		}
+		LookupRepo.securesections({}, function(data) {
+			$scope.sections = data;
+			$ionicLoading.hide();
+			$scope.loaded = true;
+		});
+		// if ($state.current.data.isCompany) {
+			// LookupRepo.companies({}, function (data) {
+				// $scope.sections = data;
+				// $ionicLoading.hide();
+				// $scope.loaded = true;
+			// });
+		// } else {
+			// LookupRepo.freelance({}, function (data) {
+				// $scope.sections = data;
+				// $ionicLoading.hide();
+				// $scope.loaded = true;
+			// });
+		// }
 	};
 	
 	$scope.loadSections();

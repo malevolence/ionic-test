@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starter.services', 'LocalStorageModule'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,10 +22,13 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
 
 .config(['$locationProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', function($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider) {
 //  $locationProvider.html5Mode(true);
+//  $sceDelegateProvider.resourceUrlWhitelist(['self', baseUrl + '/**']);
 
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
 
+  $httpProvider.interceptors.push('authInterceptorService');
+  
   $stateProvider
     .state('app', {
       url: "/app",
@@ -34,6 +37,16 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
       controller: 'AppCtrl'
     })
 
+	.state('app.login', {
+		url: '/login',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/login.html',
+				controller: 'LoginCtrl'
+			}
+		}
+	})
+	
     .state('app.leads', {
       url: "/leads",
       views: {
