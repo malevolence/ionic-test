@@ -1,12 +1,11 @@
 <ion-view title="Profiles">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	<button class="button button-icon icon ion-navigate" ng-click="loadProfilesWithLocation()"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
 	<ion-list>
-		<ion-item class="item item-icon-left" style="text-align: center;">
-			<i class="icon ion-navigate"></i> {{position}}
-		</ion-item>
+		<ion-item class="item">{{position}}</ion-item>
 		<ion-item class="item-avatar item-text-wrap" ng-repeat="profile in profiles" href="#/app/profile/{{profile.id}}">
 			<img src="img/default.png" alt="Company Logo" />
 			<h2>{{profile.name}}</h2>

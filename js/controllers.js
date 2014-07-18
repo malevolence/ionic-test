@@ -96,10 +96,10 @@ angular.module('starter.controllers', [])
 .controller('ProfileLandingCtrl', function($scope) {
 })
 
-.controller('ProfileListCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
+.controller('ProfileListCtrl', function($scope, $ionicLoading, $stateParams, $q, ProfileRepo) {
 	$scope.loaded = false;
 	$scope.profiles = [];
-	$scope.useLocation = true;
+	$scope.useLocation = false;
 	$scope.position = null;
 	$scope.page = 0;
 	$scope.pagination = {
@@ -109,7 +109,17 @@ angular.module('starter.controllers', [])
 		nextPageLink: ''
 	};
 
+	$scope.loadProfilesWithLocation = function() {
+		$scope.useLocation = true;
+
+		$scope.getLocation().then(function() {
+			$scope.loadProfiles(1)
+		});
+	};
+	
 	$scope.loadProfiles = function(page) {
+		console.log(page);
+		console.log($scope.position);
 		$scope.loaded = false;
 		$ionicLoading.show({
 			template: 'Loading...'
@@ -122,13 +132,8 @@ angular.module('starter.controllers', [])
 			page = $scope.pagination.totalPages;
 		}
 
-		if ($scope.useLocation) {
-			$scope.getLocation();
-		}
-		
-		
-		if ($scope.position != null) {
-			ProfileRepo.profilegps({ catId: $stateParams.categoryId, lat: $scope.latitude, lng: $scope.longitude, page: page }, function(data, responseHeaders) {
+		if ($scope.useLocation && $scope.position != null) {
+			ProfileRepo.profilegps({ catId: $stateParams.categoryId, lat: $scope.position.latitude, lng: $scope.position.longitude, page: page }, function(data, responseHeaders) {
 				$scope.profiles = data;
 				$scope.page = page;
 				$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
@@ -147,9 +152,12 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.getLocation = function() {
+		var deferred = $q.defer();
+
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				$scope.position = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+				deferred.resolve(true);
 			}, function(error) {
 				switch (error.code) {
 					case error.PERMISSION_DENIED:
@@ -165,11 +173,15 @@ angular.module('starter.controllers', [])
 						alert('Unknown error occurred');
 						break;
 				}
+				deferred.reject(error);
 			});
 		} else {
 			// not supported
 			alert('Geolocation is not supported.');
+			deferred.reject('Unsupported');
 		}
+
+		return deferred.promise;
 	};
 	
 	$scope.loadProfiles(1);
