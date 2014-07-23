@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starter.services', 'LocalStorageModule'])
+angular.module('starter', ['ionic', 'ngResource', 'ngSanitize', 'starter.controllers', 'starter.services', 'LocalStorageModule'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -85,6 +85,27 @@ angular.module('starter', ['ionic', 'ngResource', 'starter.controllers', 'starte
         }
       }
     })
+
+	.state('app.blog', {
+		url: '/blog',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/blog.html',
+				controller: 'BlogListCtrl'
+			}
+		}
+	})
+	
+	.state('app.singlepost', {
+		url: '/blog/:postId',
+		views: {
+			'menuContent': {
+				templateUrl: 'templates/blogpost.html',
+				controller: 'BlogPostCtrl'
+			}
+		}
+	})
+
 	
 	.state('app.jobs', {
 		url: '/jobs',

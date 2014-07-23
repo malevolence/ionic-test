@@ -1,0 +1,13 @@
+<ion-view title="Blog Post Details">
+  <ion-content class="has-header">
+    <div class="card">
+		<div class="item item-divider">
+			{{post.title}}
+		</div>
+		<div class="item item-text-wrap"><small>Published on {{post.pubDate|date: 'fullDate'}} in {{post.category}}</small></div>
+		<div class="item item-text-wrap">
+			<div ng-bind-html="post.body"></div>
+		</div>
+	</div>
+  </ion-content>
+</ion-view>

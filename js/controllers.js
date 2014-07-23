@@ -51,24 +51,24 @@ angular.module('starter.controllers', [])
 			template: 'Loading...'
 		});
 
-		LookupRepo.securesections({}, function(data) {
-			$scope.sections = data;
-			$ionicLoading.hide();
-			$scope.loaded = true;
-		});
-		// if ($state.current.data.isCompany) {
-			// LookupRepo.companies({}, function (data) {
-				// $scope.sections = data;
-				// $ionicLoading.hide();
-				// $scope.loaded = true;
-			// });
-		// } else {
-			// LookupRepo.freelance({}, function (data) {
-				// $scope.sections = data;
-				// $ionicLoading.hide();
-				// $scope.loaded = true;
-			// });
-		// }
+		// LookupRepo.securesections({}, function(data) {
+			// $scope.sections = data;
+			// $ionicLoading.hide();
+			// $scope.loaded = true;
+		// });
+		if ($state.current.data.isCompany) {
+			LookupRepo.companies({}, function (data) {
+				$scope.sections = data;
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		} else {
+			LookupRepo.freelance({}, function (data) {
+				$scope.sections = data;
+				$ionicLoading.hide();
+				$scope.loaded = true;
+			});
+		}
 	};
 	
 	$scope.loadSections();
@@ -190,6 +190,47 @@ angular.module('starter.controllers', [])
 .controller('ProfileItemCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
 	$scope.profile = ProfileRepo.get({ id: $stateParams.id });
 })
+
+.controller('BlogListCtrl', ['$scope', '$ionicLoading', 'BlogRepo', function($scope, $ionicLoading, BlogRepo) {
+		$scope.loaded = false;
+	$scope.page = 0;
+	$scope.posts = [];
+	$scope.pagination = {
+		totalCount: 0,
+		totalPages: 1,
+		prevPageLink: '',
+		nextPageLink: ''
+	};
+
+	$scope.loadPosts = function (page) {
+		$scope.loaded = false;
+		$ionicLoading.show({
+			template: 'Loading...'
+		});
+
+		// Restrict paging to bounds of the set
+		if (page < 1) {
+			page = 1;
+		} else if (page > $scope.pagination.totalPages) {
+			page = $scope.pagination.totalPages;
+		}
+
+		BlogRepo.query({ page: page }, function (data, responseHeaders) {
+			$scope.posts = data;
+			$scope.page = page;
+			$scope.pagination = angular.fromJson(responseHeaders('X-Pagination'));
+			$ionicLoading.hide();
+			$scope.loaded = true;
+		});
+	}
+
+	// Initialize the controller
+	$scope.loadPosts(1);
+}])
+
+.controller('BlogPostCtrl', ['$scope', '$stateParams', 'BlogRepo', function($scope, $stateParams, BlogRepo) {
+	$scope.post = BlogRepo.get({ id: $stateParams.postId });
+}])
 
 .controller('JobsListCtrl', ['$scope', '$ionicLoading', 'JobRepo', function ($scope, $ionicLoading, JobRepo) {
 	$scope.loaded = false;
