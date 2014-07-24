@@ -6,7 +6,7 @@
 		</div>
 		<div class="item item-text-wrap"><small>Published on {{post.pubDate|date: 'fullDate'}} in {{post.category}}</small></div>
 		<div class="item item-text-wrap">
-			<p ng-show="{{post.imageName}}"><img ng-src="//s3.amazonaws.com/images.productionhub.com/posts/{{post.imageName}}" alt="{{post.title}}" /></p>
+			<div><img ng-src="//s3.amazonaws.com/images.productionhub.com/posts/{{post.imageName}}" alt="{{post.title}}" /></div>
 			<div ng-bind-html="post.body"></div>
 		</div>
 	</div>
