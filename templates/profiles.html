@@ -6,11 +6,11 @@
   <ion-content class="has-header">
 	<ion-list>
 		<ion-item class="item">{{position}}</ion-item>
-		<ion-item class="item-avatar item-text-wrap" ng-repeat="profile in profiles" href="#/app/profile/{{profile.id}}">
-			<img src="img/default.png" alt="Company Logo" />
+		<ion-item ng-class="{ 'item-avatar': profile.isFeatured }" class="item-text-wrap" ng-repeat="profile in profiles" href="#/app/profile/{{profile.id}}">
+			<img src="img/default.png" alt="Company Logo" ng-if="profile.isFeatured" />
 			<h2>{{profile.name}}</h2>
 			<div><small>{{profile.location}}</small></div>
-			<p>{{profile.description}}</p>
+			<p ng-if="profile.isFeatured">{{profile.description}}</p>
 		</ion-item>
 	</ion-list>
   </ion-content>

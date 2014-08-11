@@ -1,9 +1,8 @@
-angular.module('starter.controllers', [])
+(function(app) {
 
-.controller('AppCtrl', function($scope) {
-})
+app.controller('AppCtrl', function($scope) {});
 
-.controller('LoginCtrl', ['$scope', '$location', 'authService', '$ionicLoading', function($scope, $location, authService, $ionicLoading) {
+app.controller('LoginCtrl', ['$scope', '$location', 'authService', '$ionicLoading', function($scope, $location, authService, $ionicLoading) {
 	$ionicLoading.hide();
 	$scope.loginData = {
 		userName: '',
@@ -19,9 +18,9 @@ angular.module('starter.controllers', [])
 			$scope.message = err.error_description;
 		});
 	};
-}])
+}]);
 
-.controller('LandingCtrl', function($scope, $ionicLoading, BlogRepo) {
+app.controller('LandingCtrl', ['$scope', '$ionicLoading', 'BlogRepo', function($scope, $ionicLoading, BlogRepo) {
 	$scope.loaded = false;
 	$scope.posts = [];
 
@@ -39,9 +38,9 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadPosts(1);
-})
+}]);
 
-.controller('SectionsCtrl', function($scope, $ionicLoading, $state, LookupRepo) {
+app.controller('SectionsCtrl', ['$scope', '$ionicLoading', '$state', 'LookupRepo', function($scope, $ionicLoading, $state, LookupRepo) {
 	$scope.isCompany = $state.current.data.isCompany;
 	$scope.loaded = false;
 	$scope.sections = [];
@@ -72,9 +71,9 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadSections();
-})
+}]);
 
-.controller('CategoriesCtrl', function($scope, $ionicLoading, $stateParams, LookupRepo) {
+app.controller('CategoriesCtrl', ['$scope', '$ionicLoading', '$stateParams', 'LookupRepo', function($scope, $ionicLoading, $stateParams, LookupRepo) {
 	$scope.loaded = false;
 	$scope.categories = [];
 	$scope.loadCategories = function() {
@@ -91,12 +90,11 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadCategories();
-})
+}]);
 
-.controller('ProfileLandingCtrl', function($scope) {
-})
+app.controller('ProfileLandingCtrl', ['$scope', function($scope) {}]);
 
-.controller('ProfileListCtrl', function($scope, $ionicLoading, $stateParams, $q, ProfileRepo) {
+app.controller('ProfileListCtrl', ['$scope', '$ionicLoading', '$stateParams', '$q', 'ProfileRepo', function($scope, $ionicLoading, $stateParams, $q, ProfileRepo) {
 	$scope.loaded = false;
 	$scope.profiles = [];
 	$scope.useLocation = false;
@@ -118,8 +116,6 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadProfiles = function(page) {
-		console.log(page);
-		console.log($scope.position);
 		$scope.loaded = false;
 		$ionicLoading.show({
 			template: 'Loading...'
@@ -185,13 +181,13 @@ angular.module('starter.controllers', [])
 	};
 	
 	$scope.loadProfiles(1);
-})
+}]);
 
-.controller('ProfileItemCtrl', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
+app.controller('ProfileItemCtrl', ['$scope', '$ionicLoading', '$stateParams', 'ProfileRepo', function($scope, $ionicLoading, $stateParams, ProfileRepo) {
 	$scope.profile = ProfileRepo.get({ id: $stateParams.id });
-})
+}]);
 
-.controller('BlogListCtrl', ['$scope', '$ionicLoading', 'BlogRepo', function($scope, $ionicLoading, BlogRepo) {
+app.controller('BlogListCtrl', ['$scope', '$ionicLoading', 'BlogRepo', function($scope, $ionicLoading, BlogRepo) {
 		$scope.loaded = false;
 	$scope.page = 0;
 	$scope.posts = [];
@@ -226,13 +222,13 @@ angular.module('starter.controllers', [])
 
 	// Initialize the controller
 	$scope.loadPosts(1);
-}])
+}]);
 
-.controller('BlogPostCtrl', ['$scope', '$stateParams', 'BlogRepo', function($scope, $stateParams, BlogRepo) {
+app.controller('BlogPostCtrl', ['$scope', '$stateParams', 'BlogRepo', function($scope, $stateParams, BlogRepo) {
 	$scope.post = BlogRepo.get({ id: $stateParams.postId });
-}])
+}]);
 
-.controller('JobsListCtrl', ['$scope', '$ionicLoading', 'JobRepo', function ($scope, $ionicLoading, JobRepo) {
+app.controller('JobsListCtrl', ['$scope', '$ionicLoading', 'JobRepo', function ($scope, $ionicLoading, JobRepo) {
 	$scope.loaded = false;
 	$scope.page = 0;
 	$scope.jobs = [];
@@ -267,7 +263,10 @@ angular.module('starter.controllers', [])
 
 	// Initialize the controller
 	$scope.loadJobs(1);
-}])
-.controller('JobItemCtrl', ['$scope', '$stateParams', 'JobRepo', function($scope, $stateParams, JobRepo) {
+}]);
+
+app.controller('JobItemCtrl', ['$scope', '$stateParams', 'JobRepo', function($scope, $stateParams, JobRepo) {
 	$scope.job = JobRepo.get({ id: $stateParams.jobId });
 }]);
+
+})(angular.module('starter.controllers', []));
